@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-from src.routers import ping
+from src.routers import ping, papers, ask
 
 app = FastAPI()
 
 app.include_router(ping.router)
+app.include_router(papers.router)
+app.include_router(ask.router)
 
 @app.get("/")
 def read_root():
