@@ -26,6 +26,7 @@ services:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://rag_user:rag_password@postgres:5432/rag_db
       - AIRFLOW__CORE__LOAD_EXAMPLES=false
+    command: standalone
     ports:
       - "8080:8080"
     depends_on:
