@@ -6,7 +6,19 @@ services:
       - "8000:8000"
     depends_on:
       - postgres
-      
+      - opensearch
+  
+  opensearch:
+    image: opensearchproject/opensearch:2.19.0
+    container_name: rag-opensearch
+    environment:
+      - discovery.type=single-node
+      - DISABLE_SECURITY_PLUGIN=true
+    ports:
+      - "9200:9200"
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+
   postgres:
     image: postgres:16-alpine
     container_name: rag-postgres
@@ -18,9 +30,25 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+# test
+# -  docker compose exec postgres psql -U rag_user -d rag_db -c "SELECT version();"
+  airflow:
+    image: apache/airflow:3.0.3
+    container_name: rag-airflow
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://rag_user:rag_password@postgres:5432/rag_db
+      - AIRFLOW__CORE__LOAD_EXAMPLES=false
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - airflow_logs:/opt/airflow/logs
 
 volumes:
   postgres_data:
+  opensearch_data:
+  airflow_logs:
 
-# test
-# -  docker compose exec postgres psql -U rag_user -d rag_db -c "SELECT version();"
