@@ -7,7 +7,7 @@ services:
     depends_on:
       - postgres
       - opensearch
-  
+
   opensearch:
     image: opensearchproject/opensearch:2.19.0
     container_name: rag-opensearch
@@ -19,19 +19,6 @@ services:
     volumes:
       - opensearch_data:/usr/share/opensearch/data
 
-  postgres:
-    image: postgres:16-alpine
-    container_name: rag-postgres
-    environment:
-      - POSTGRES_DB=rag_db
-      - POSTGRES_USER=rag_user
-      - POSTGRES_PASSWORD=rag_password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-# test
-# -  docker compose exec postgres psql -U rag_user -d rag_db -c "SELECT version();"
   airflow:
     image: apache/airflow:3.0.3
     container_name: rag-airflow
@@ -47,8 +34,28 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - airflow_logs:/opt/airflow/logs
 
+  ollama:
+    image: ollama/ollama:0.11.2
+    container_name: rag-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: rag-postgres
+    environment:
+      - POSTGRES_DB=rag_db
+      - POSTGRES_USER=rag_user
+      - POSTGRES_PASSWORD=rag_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 volumes:
   postgres_data:
   opensearch_data:
   airflow_logs:
-
+  ollama_data:
