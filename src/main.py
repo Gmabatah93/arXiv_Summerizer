@@ -1,6 +1,9 @@
 from fastapi import FastAPI
+from src.routers import ping
 
 app = FastAPI()
+
+app.include_router(ping.router)
 
 @app.get("/")
 def read_root():
