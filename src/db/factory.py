@@ -14,10 +14,10 @@ def make_database() -> BaseDatabase:
     
     Factory pattern: centralizes object creation logic
     """
-    # Get your app settings
+    # 1. Get your app settings
     settings = get_settings()
 
-    # Create PostgreSQL-specific configuration
+    # 2. Create PostgreSQL-specific configuration
     config = PostgreSQLSettings(
         database_url=settings.postgres_database_url,
         echo_sql=settings.postgres_echo_sql,
@@ -25,7 +25,9 @@ def make_database() -> BaseDatabase:
         max_overflow=settings.postgres_max_overflow,
     )
 
-    # Create and initialize the database
+    # 3. Create database
     database = PostgreSQLDatabase(config=config)
+
+    # 4. Initialize the database
     database.startup()  # This connects to the database and creates tables
     return database

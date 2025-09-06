@@ -1,3 +1,8 @@
+"""
+This defines the contracts - what any database implementation must provide:
+These are like blueprints that force consistency across different database types.
+"""
+
 from abc import ABC, abstractmethod
 from typing import Any, ContextManager, Dict, List, Optional
 from sqlalchemy.orm import Session
