@@ -21,7 +21,7 @@ class Settings(DefaultSettings):
     service_name: str = "rag-api"
 
     # PostgreSQL configuration - where your data lives
-    postgres_database_url: str = "postgresql://rag_user:rag_password@postgres:5432/rag_db" # point to your Postgres DB defined in compose.yml
+    postgres_database_url: str = "postgresql://rag_user:rag_password@localhost:5432/rag_db" # point to your Postgres DB defined in compose.yml
     postgres_echo_sql: bool = False        # Set to True to see SQL queries in logs
     postgres_pool_size: int = 20           # How many connections to keep open
     postgres_max_overflow: int = 0         # Additional connections when pool is full
