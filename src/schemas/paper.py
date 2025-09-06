@@ -1,36 +1,33 @@
-from typing import Dict, Optional
+from datetime import datetime
+from typing import List
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
 
-class ServiceStatus(BaseModel):
-    """Individual service status."""
+class PaperBase(BaseModel):
+    arxiv_id: str = Field(..., description="arXiv paper ID")
+    title: str = Field(..., description="Paper title")
+    authors: List[str] = Field(..., description="List of author names")
+    abstract: str = Field(..., description="Paper abstract")
+    categories: List[str] = Field(..., description="Paper categories")
+    published_date: datetime = Field(..., description="Date published on arXiv")
+    pdf_url: str = Field(..., description="URL to PDF")
 
-    status: str = Field(..., description="Service status", example="healthy")
-    message: Optional[str] = Field(None, description="Status message", example="Connected successfully")
+
+class PaperCreate(PaperBase):
+    pass
 
 
-class HealthResponse(BaseModel):
-    """Health check response model."""
-
-    status: str = Field(..., description="Overall health status", example="ok")
-    version: str = Field(..., description="Application version", example="0.1.0")
-    environment: str = Field(..., description="Deployment environment", example="development")
-    service_name: str = Field(..., description="Service identifier", example="rag-api")
-    services: Optional[Dict[str, ServiceStatus]] = Field(None, description="Individual service statuses")
+class PaperResponse(PaperBase):
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
-        """Pydantic configuration."""
+        from_attributes = True
 
-        json_schema_extra = {
-            "example": {
-                "status": "ok",
-                "version": "0.1.0",
-                "environment": "development",
-                "service_name": "rag-api",
-                "services": {
-                    "database": {"status": "healthy", "message": "Connected successfully"},
-                    "pdf_parser": {"status": "healthy", "message": "Docling parser ready"},
-                },
-            }
-        }
+
+class PaperSearchResponse(BaseModel):
+    papers: List[PaperResponse]
+    total: int

@@ -1,3 +1,9 @@
+"""
+FACTORY LAYER
+
+- This is the orchestrator that puts everything together:
+"""
+
 from src.config import get_settings
 from src.db.interfaces.base import BaseDatabase
 from src.db.interfaces.postgresql import PostgreSQLDatabase, PostgreSQLSettings
@@ -7,14 +13,14 @@ def make_database() -> BaseDatabase:
     """Factory function to create a database instance.
     
     This function:
-    1. Gets your app settings
-    2. Creates database-specific configuration
-    3. Creates and initializes the database
-    4. Returns the ready-to-use database
+    1. Gets your app settings                     (CONFIGURATION LAYER)
+    2. Creates database-specific configuration    (IMPLEMENTATION LAYER)
+    3. Creates and initializes the database       (IMPLEMENTATION LAYER)
+    4. Returns the ready-to-use database          
     
     Factory pattern: centralizes object creation logic
     """
-    # 1. Get your app settings
+    # 1. Get your app settings 
     settings = get_settings()
 
     # 2. Create PostgreSQL-specific configuration

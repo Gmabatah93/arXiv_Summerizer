@@ -1,3 +1,9 @@
+"""
+IMPLEMENTATION LAYER
+
+- The concrete PostgreSQL implementation:
+"""
+
 import logging
 from contextlib import contextmanager
 from typing import Generator, Optional

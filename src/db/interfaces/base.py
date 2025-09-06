@@ -1,6 +1,8 @@
 """
-This defines the contracts - what any database implementation must provide:
-These are like blueprints that force consistency across different database types.
+ABSTRACT LAYER
+
+- This defines the contracts - what any database implementation must provide:
+- These are like blueprints that force consistency across different database types.
 """
 
 from abc import ABC, abstractmethod
